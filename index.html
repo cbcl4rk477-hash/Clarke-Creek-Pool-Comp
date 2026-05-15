@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🎱 Clarke Creek Pool Competition</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0c1810;color:#f2ead8;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,0.006) 3px,rgba(255,255,255,0.006) 6px),radial-gradient(ellipse at 10% 10%,rgba(26,74,46,0.3) 0%,transparent 50%),radial-gradient(ellipse at 90% 90%,rgba(30,77,52,0.2) 0%,transparent 50%);pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:14px 12px;}
+/* HEADER */
+.header{text-align:center;padding:28px 10px 16px;}
+.balls{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
+.ball{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;box-shadow:inset -3px -3px 6px rgba(0,0,0,0.5),inset 2px 2px 5px rgba(255,255,255,0.25),0 3px 10px rgba(0,0,0,0.5);}
+h1{font-size:clamp(26px,5.5vw,54px);font-weight:800;color:#c9a84c;line-height:1.05;text-shadow:0 0 40px rgba(201,168,76,0.3),2px 2px 0 rgba(0,0,0,0.7);letter-spacing:1px;}
+.subtitle{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(242,234,216,0.4);margin-top:6px;}
+.pot-badge{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:20px;font-size:13px;color:rgba(242,234,216,0.6);}
+.pot-badge strong{color:#c9a84c;font-size:15px;}
+.save-msg{margin-top:7px;font-size:11px;color:#27ae60;}
+/* FORMAT BANNER */
+.format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;text-align:center;}
+.format-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 8px;}
+.format-box strong{display:block;font-size:14px;font-weight:800;color:#c9a84c;}
+.format-box span{font-size:11px;color:rgba(242,234,216,0.4);}
+/* TABS */
+.tabs{display:flex;gap:3px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:4px;margin-bottom:16px;}
+.tab-btn{flex:1;padding:8px 2px;background:none;border:none;color:rgba(242,234,216,0.4);font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;border-radius:8px;text-align:center;transition:all .15s;}
+.tab-btn.active{background:#1e4d34;color:#c9a84c;box-shadow:0 2px 8px rgba(0,0,0,0.35);}
+.panel{display:none;}.panel.active{display:block;}
+/* CARDS */
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px;margin-bottom:14px;}
+.card-gold{background:rgba(201,168,76,0.05);border-color:rgba(201,168,76,0.18);}
+.card-title{font-size:13px;font-weight:700;letter-spacing:1.5px;color:#c9a84c;margin-bottom:14px;text-transform:uppercase;}
+/* FORM */
+input[type=date],input[type=number],select{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:7px 11px;color:#f2ead8;font-family:inherit;font-size:13px;outline:none;}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.7);}
+select option{background:#1a3d2b;}
+.btn-gold{padding:9px 22px;border:none;border-radius:9px;background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#0c1810;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-gold.lg{font-size:15px;padding:13px 44px;}
+.btn-felt{padding:7px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;background:#1e4d34;color:#f2ead8;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;}
+/* PLAYER ROW */
+.player-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:9px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;}
+.av{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;}
+.player-name{flex:1;font-size:13px;font-weight:500;min-width:130px;}
+.set-ok{font-size:10px;color:#27ae60;}
+.set-no{font-size:10px;color:rgba(231,76,60,0.7);}
+/* INFO */
+.info{display:flex;gap:8px;padding:9px 12px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.18);border-radius:9px;font-size:12px;color:rgba(201,168,76,.85);margin-bottom:12px;line-height:1.5;}
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-bottom:14px;}
+.stat-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:12px 8px;text-align:center;}
+.stat-val{font-size:22px;font-weight:800;color:#c9a84c;line-height:1;}
+.stat-lbl{font-size:11px;color:rgba(242,234,216,0.4);margin-top:3px;}
+/* GROUP BUTTONS */
+.group-btns{display:flex;gap:6px;margin-bottom:12px;}
+.group-btn{flex:1;padding:10px;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);outline:1px solid rgba(255,255,255,0.08);}
+.group-btn.active{background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#0c1810;outline:none;}
+/* VIEW TOGGLE */
+.view-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:3px;margin-bottom:14px;}
+.view-btn{flex:1;padding:7px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;background:none;color:rgba(242,234,216,0.4);}
+.view-btn.active{background:#1e4d34;color:#c9a84c;}
+/* FIXTURE */
+.day-header{border-bottom:1px solid rgba(201,168,76,0.2);padding-bottom:7px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.day-title{font-size:14px;font-weight:700;color:#c9a84c;}
+.day-count{font-size:11px;color:rgba(242,234,216,0.4);}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.chip{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;}
+.chip-on{background:rgba(39,174,96,0.14);color:#27ae60;border:1px solid rgba(39,174,96,0.25);}
+.chip-off{background:rgba(231,76,60,0.1);color:#e74c3c;border:1px solid rgba(231,76,60,0.2);}
+.fixture{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;margin-bottom:6px;flex-wrap:wrap;}
+.fixture.done{border-color:rgba(39,174,96,0.2);}
+.fix-players{flex:1;display:flex;align-items:center;gap:8px;min-width:200px;}
+.fix-p{font-size:13px;font-weight:600;}
+.fix-vs{font-size:11px;color:rgba(242,234,216,0.4);}
+.fix-controls{display:flex;align-items:center;gap:7px;}
+.badge{font-size:11px;padding:2px 9px;border-radius:20px;}
+.badge-done{background:rgba(39,174,96,0.14);color:#27ae60;border:1px solid rgba(39,174,96,0.25);}
+.badge-pending{background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);border:1px solid rgba(255,255,255,0.08);}
+/* PROGRESS BAR */
+.prog-wrap{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;margin:8px 0;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#1e4d34,#c9a84c);border-radius:4px;transition:width .4s;}
+.prog-wrap.lg{height:10px;}
+/* STANDINGS TABLE */
+.standings-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:11px;letter-spacing:1.5px;color:rgba(242,234,216,0.4);padding:10px 10px;border-bottom:1px solid rgba(255,255,255,0.08);white-space:nowrap;font-weight:600;}
+th.left,td.left{text-align:left;}
+th.center,td.center{text-align:center;}
+td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.row-1{background:rgba(201,168,76,0.09);}
+.row-2{background:rgba(192,192,192,0.05);}
+.row-3{background:rgba(39,174,96,0.06);}
+.rank{font-size:17px;font-weight:700;}
+.pts-big{font-size:20px;font-weight:800;color:#c9a84c;}
+.qual-yes{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(39,174,96,0.14);color:#27ae60;border:1px solid rgba(39,174,96,0.25);}
+.qual-no{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);border:1px solid rgba(255,255,255,0.08);}
+/* KO MATCH */
+.ko-match{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.ko-match.final{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);}
+.ko-label{font-size:13px;font-weight:700;color:#f2ead8;margin-bottom:3px;}
+.ko-match.final .ko-label{color:#c9a84c;}
+.ko-desc{font-size:11px;color:rgba(242,234,216,0.4);margin-bottom:12px;}
+.ko-players{display:flex;align-items:center;gap:8px;flex:1;min-width:180px;}
+.ko-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.tbd{font-size:13px;color:rgba(242,234,216,0.4);font-style:italic;}
+.champion-banner{text-align:center;padding:24px 16px;background:radial-gradient(ellipse at center,rgba(201,168,76,0.15) 0%,transparent 70%);border:1px solid rgba(201,168,76,0.3);border-radius:16px;margin-bottom:20px;}
+/* PRIZE */
+.prize-hero{text-align:center;padding:28px 16px;background:radial-gradient(ellipse at center,rgba(201,168,76,0.12) 0%,transparent 65%);border:1px solid rgba(201,168,76,0.25);border-radius:16px;margin-bottom:16px;}
+.prize-amount{font-size:60px;font-weight:900;color:#c9a84c;line-height:1;text-shadow:0 0 40px rgba(201,168,76,0.4);}
+.prize-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:11px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.07);}
+.prize-place{flex:1;}
+.prize-place strong{font-size:14px;font-weight:700;}
+.prize-place span{font-size:11px;color:rgba(242,234,216,0.4);display:block;margin-top:2px;}
+.prize-val{font-size:26px;font-weight:900;}
+.game-grid{display:flex;gap:5px;flex-wrap:wrap;}
+.game-cell{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+.game-cell.done{background:linear-gradient(135deg,#1e4d34,#c9a84c);border:1px solid rgba(201,168,76,0.4);color:#c9a84c;}
+.game-cell.todo{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(242,234,216,0.4);}
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.filter-row label{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(242,234,216,0.4);cursor:pointer;}
+/* MISC */
+.empty{text-align:center;padding:50px 20px;color:rgba(242,234,216,0.4);font-size:13px;}
+.warn{font-size:11px;color:rgba(231,76,60,0.7);margin-top:8px;text-align:center;}
+.pts-row{display:flex;gap:20px;flex-wrap:wrap;}
+.pts-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(242,234,216,0.4);}
+.qualify-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.qualify-group-title{font-size:12px;font-weight:700;color:#c9a84c;margin-bottom:8px;}
+.qualify-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:8px;}
+.qualify-pts{margin-left:auto;font-size:13px;font-weight:800;color:#c9a84c;}
+.draw-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.draw-group{font-size:13px;font-weight:700;color:#c9a84c;margin-bottom:8px;}
+.draw-player{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:3px;}
+@media(max-width:600px){
+  .tabs{flex-wrap:wrap;}
+  .tab-btn{min-width:45%;}
+  th:nth-child(n+6),td:nth-child(n+6){display:none;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────
+const PLAYERS = [
+  {id:0, name:"Alex Rickard",    short:"AR", roster:"1on1off_wed"},
+  {id:1, name:"Luke Edwards",    short:"LE", roster:"1on1off_wed"},
+  {id:2, name:"Luke Boardman",   short:"LB", roster:"1on1off_wed"},
+  {id:3, name:"Murray Cavanagh", short:"MC", roster:"1on1off_wed"},
+  {id:4, name:"Simon Moroney",   short:"SM", roster:"1on1off_wed"},
+  {id:5, name:"Christian Clark", short:"CC", roster:"1on1off_wed"},
+  {id:6, name:"Ivor Ralph",      short:"IR", roster:"2on2off"},
+  {id:7, name:"John Rowe",       short:"JR", roster:"2on2off"},
+  {id:8, name:"Alex Mitchell",   short:"AM", roster:"2on1off"},
+  {id:9, name:"Dan Moor",        short:"DM", roster:"2on1off"},
+  {id:10,name:"Cameron Ellis",   short:"CE", roster:"2on2off"},
+  {id:11,name:"Jackson Geddes",  short:"JG", roster:"2on2off"},
+  {id:12,name:"Kym Gray",        short:"KG", roster:"2on2off"},
+  {id:13,name:"Bryce Brown",     short:"BB", roster:"2on2off"},
+  {id:14,name:"Degen Runge",     short:"DR", roster:"1on1off_mon"},
+];
+
+const AV_COLORS = ["#c0392b","#2980b9","#27ae60","#8e44ad","#e67e22","#16a085","#d35400","#1abc9c","#f39c12","#6c5ce7","#e84393","#00b894","#e17055","#0984e3","#b8860b"];
+const ROSTER_LABELS = {"1on1off_wed":"1on/1off (Wed)","1on1off_mon":"1on/1off (Mon)","2on2off":"2on/2off","2on1off":"2on/1off"};
+const STORAGE_KEY = "cc_pool_v3";
+const MS_DAY = 86400000;
+const PRIZE_PER_GAME = 5;
+
+// ─── STATE ──────────────────────────────────────────────────────────────
+let state = {
+  tab: "setup",
+  compStart: new Date().toISOString().split("T")[0],
+  playerStarts: Object.fromEntries(PLAYERS.map(p=>[p.id,""])),
+  ptW:3, ptD:1, ptL:0,
+  groups: null,
+  fixtures: [],
+  knockout: initKnockout(),
+  activeGroup: "A",
+  groupView: "fixtures",
+  filterPlayer: "all",
+  showPlayed: true,
+  saveMsg: ""
+};
+
+function initKnockout() {
+  return [
+    {id:"sf1",  label:"Semi-Final 1",      desc:"Group A 1st vs Group B 2nd", result:null},
+    {id:"sf2",  label:"Semi-Final 2",      desc:"Group B 1st vs Group A 2nd", result:null},
+    {id:"sf3",  label:"3rd Place Semi",    desc:"Group A 3rd vs Group B 3rd", result:null},
+    {id:"final",label:"🏆 Grand Final",    desc:"SF1 winner vs SF2 winner",   result:null},
+    {id:"third",label:"3rd Place Play-off",desc:"SF3 winner vs SF1 loser",    result:null},
+  ];
+}
+
+// ─── STORAGE ────────────────────────────────────────────────────────────
+function saveState() {
+  try {
+    const d = {compStart:state.compStart,playerStarts:state.playerStarts,ptW:state.ptW,ptD:state.ptD,ptL:state.ptL,groups:state.groups,fixtures:state.fixtures,knockout:state.knockout};
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+    state.saveMsg = "✓ Saved";
+    setTimeout(()=>{ state.saveMsg=""; render(); }, 2500);
+    render();
+  } catch(e) {}
+}
+let saveTimer = null;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 700);
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.compStart) state.compStart = d.compStart;
+    if (d.playerStarts) state.playerStarts = d.playerStarts;
+    if (d.ptW !== undefined) state.ptW = d.ptW;
+    if (d.ptD !== undefined) state.ptD = d.ptD;
+    if (d.ptL !== undefined) state.ptL = d.ptL;
+    if (d.groups) state.groups = d.groups;
+    if (d.fixtures && d.fixtures.length) { state.fixtures = d.fixtures; state.tab = "groups"; }
+    if (d.knockout) state.knockout = d.knockout;
+  } catch(e) {}
+}
+
+// ─── ROSTER LOGIC ────────────────────────────────────────────────────────
+function cycleLenDays(roster) {
+  if (roster==="1on1off_wed"||roster==="1on1off_mon") return 14;
+  if (roster==="2on2off") return 28;
+  if (roster==="2on1off") return 21;
+  return 14;
+}
+function onDaysInCycle(roster) {
+  if (roster==="1on1off_wed"||roster==="1on1off_mon") return 7;
+  if (roster==="2on2off") return 14;
+  if (roster==="2on1off") return 14;
+  return 7;
+}
+function isOnSite(player, date) {
+  const startStr = state.playerStarts[player.id];
+  if (startStr) {
+    const start = new Date(startStr+"T00:00:00");
+    if (date < start) return false;
+    const daysSince = Math.floor((date-start)/MS_DAY);
+    return (daysSince % cycleLenDays(player.roster)) < onDaysInCycle(player.roster);
+  }
+  const ref = new Date("2020-01-01T00:00:00");
+  const daysSince = Math.floor((date-ref)/MS_DAY);
+  const c = cycleLenDays(player.roster), o = onDaysInCycle(player.roster);
+  return ((daysSince%c)+c)%c < o;
+}
+function weekKey(player, date) {
+  const d = new Date(date), day = d.getDay();
+  const pivot = player.roster==="1on1off_wed" ? 3 : 1;
+  const daysBack = (day+7-pivot)%7;
+  const ws = new Date(d.getTime()-daysBack*MS_DAY).toISOString().split("T")[0];
+  return player.id+":"+ws;
+}
+function ds(date) { return date.toISOString().split("T")[0]; }
+function pd(s) { return new Date(s+"T00:00:00"); }
+function fmtDate(d) { return d.toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"}); }
+function fmtShort(d) { return d.toLocaleDateString("en-AU",{day:"numeric",month:"short"}); }
+
+// ─── FIXTURE GENERATION ──────────────────────────────────────────────────
+function buildGroupFixtures(groupPlayers, gLabel) {
+  if (!state.compStart) return [];
+  const start = pd(state.compStart);
+  const pairs = [];
+  for (let i=0;i<groupPlayers.length;i++)
+    for (let j=i+1;j<groupPlayers.length;j++)
+      pairs.push([groupPlayers[i],groupPlayers[j]]);
+  for (let i=pairs.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [pairs[i],pairs[j]]=[pairs[j],pairs[i]];
+  }
+  const MAX_DAYS=700, MAX_PER_DAY=3, GPW=1;
+  const dayLoad={}, weekLoad={};
+  const fixtures=[];
+  let fid=0;
+  for (const [p1,p2] of pairs) {
+    let done=false;
+    for (let d=0;d<MAX_DAYS&&!done;d++) {
+      const date=new Date(start.getTime()+d*MS_DAY);
+      const dateStr=ds(date);
+      if (!isOnSite(p1,date)||!isOnSite(p2,date)) continue;
+      if ((dayLoad[dateStr]||0)>=MAX_PER_DAY) continue;
+      const wk1=weekKey(p1,date), wk2=weekKey(p2,date);
+      if ((weekLoad[wk1]||0)>=GPW||(weekLoad[wk2]||0)>=GPW) continue;
+      dayLoad[dateStr]=(dayLoad[dateStr]||0)+1;
+      weekLoad[wk1]=(weekLoad[wk1]||0)+1;
+      weekLoad[wk2]=(weekLoad[wk2]||0)+1;
+      fixtures.push({id:gLabel+"-"+fid++,p1:p1.id,p2:p2.id,date:dateStr,result:null,group:gLabel});
+      done=true;
+    }
+    if (!done) {
+      for (let d=0;d<MAX_DAYS;d++) {
+        const date=new Date(start.getTime()+d*MS_DAY);
+        const dateStr=ds(date);
+        if (isOnSite(p1,date)&&isOnSite(p2,date)) {
+          fixtures.push({id:gLabel+"-"+fid++,p1:p1.id,p2:p2.id,date:dateStr,result:null,group:gLabel,fallback:true});
+          break;
+        }
+      }
+    }
+  }
+  return fixtures.sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+function seededShuffle(arr, seed) {
+  const a=[...arr]; let s=seed;
+  for (let i=a.length-1;i>0;i--) {
+    s=(s*1664525+1013904223)&0xffffffff;
+    const j=Math.abs(s)%(i+1);
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function drawAndGenerate() {
+  const seed=Date.now();
+  const shuffled=seededShuffle(PLAYERS,seed);
+  state.groups={A:shuffled.slice(0,8), B:shuffled.slice(8,15)};
+  const fA=buildGroupFixtures(state.groups.A,"A");
+  const fB=buildGroupFixtures(state.groups.B,"B");
+  state.fixtures=[...fA,...fB];
+  state.knockout=initKnockout();
+  state.tab="groups";
+  scheduleSave();
+  render();
+}
+
+// ─── STANDINGS ───────────────────────────────────────────────────────────
+function calcStandings(players, groupLabel) {
+  const stats=players.map(p=>({p,pl:0,w:0,d:0,l:0,pts:0}));
+  const gFix=state.fixtures.filter(f=>f.group===groupLabel);
+  for (const f of gFix) {
+    if (!f.result) continue;
+    const s1=stats.find(s=>s.p.id===f.p1), s2=stats.find(s=>s.p.id===f.p2);
+    if (!s1||!s2) continue;
+    s1.pl++;s2.pl++;
+    if (f.result==="p1"){s1.w++;s1.pts+=state.ptW;s2.l++;s2.pts+=state.ptL;}
+    else if (f.result==="p2"){s2.w++;s2.pts+=state.ptW;s1.l++;s1.pts+=state.ptL;}
+    else{s1.d++;s1.pts+=state.ptD;s2.d++;s2.pts+=state.ptD;}
+  }
+  return stats.sort((a,b)=>b.pts-a.pts||b.w-a.w||a.l-b.l);
+}
+
+// ─── AVATAR ──────────────────────────────────────────────────────────────
+function av(pid, size=26) {
+  const p=PLAYERS.find(x=>x.id===pid);
+  if (!p) return `<span style="width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.1);display:inline-block;"></span>`;
+  return `<span class="av" style="width:${size}px;height:${size}px;font-size:${Math.floor(size*0.35)}px;background:${AV_COLORS[p.id%AV_COLORS.length]};">${p.short}</span>`;
+}
+function pName(pid) { return PLAYERS.find(p=>p.id===pid)?.name||"?"; }
+function pFirst(pid) { return pName(pid).split(" ")[0]; }
+function pColor(pid) { return AV_COLORS[pid%AV_COLORS.length]; }
+
+// ─── RENDER HELPERS ──────────────────────────────────────────────────────
+function statBox(val,lbl) {
+  return `<div class="stat-box"><div class="stat-val">${val}</div><div class="stat-lbl">${lbl}</div></div>`;
+}
+
+// ─── RENDER SETUP ────────────────────────────────────────────────────────
+function renderSetup() {
+  const gWed=PLAYERS.filter(p=>p.roster==="1on1off_wed");
+  const gMon=PLAYERS.filter(p=>p.roster==="1on1off_mon");
+  const g2on2=PLAYERS.filter(p=>p.roster==="2on2off");
+  const g2on1=PLAYERS.filter(p=>p.roster==="2on1off");
+
+  function playerRows(players, dateLabel) {
+    return players.map(p=>`
+      <div class="player-row">
+        ${av(p.id)} <span class="player-name">${p.name}</span>
+        <label style="font-size:11px;color:rgba(242,234,216,0.4);">${dateLabel}:</label>
+        <input type="date" value="${state.playerStarts[p.id]||''}" onchange="state.playerStarts[${p.id}]=this.value;scheduleSave();render();" style="width:148px;">
+        <span class="${state.playerStarts[p.id]?'set-ok':'set-no'}">${state.playerStarts[p.id]?'✓ Set':'Not set'}</span>
+      </div>`).join('');
+  }
+
+  const drawHtml = state.groups ? `
+    <div class="card">
+      <div class="card-title">Current Group Draw</div>
+      <div class="draw-grid">
+        ${["A","B"].map(g=>`
+          <div>
+            <div class="draw-group">Group ${g} (${state.groups[g].length} players)</div>
+            ${state.groups[g].map(p=>`<div class="draw-player">${av(p.id,22)}<span style="font-size:13px;">${p.name}</span></div>`).join('')}
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="card">
+      <div class="card-title">Competition Start Date</div>
+      <div class="info">📅 Matches assigned to specific dates including weekends. Each player plays 1 game per rostered week on-site.</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <label style="font-size:13px;color:#c9a84c;font-weight:600;">Start date:</label>
+        <input type="date" value="${state.compStart}" onchange="state.compStart=this.value;scheduleSave();render();">
+      </div>
+    </div>
+
+    <div class="card card-gold">
+      <div class="card-title">Competition Format</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        ${[["🎱","Group A: 8, Group B: 7","randomly drawn"],["📊","49 total matches","group stage"],["✅","Top 3 qualify","from each group"],["⚔️","Semi-finals + Final","knockout stage"]].map(([ic,a,b])=>`
+          <div style="display:flex;gap:8px;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:9px;border:1px solid rgba(255,255,255,0.07);">
+            <span style="font-size:16px;">${ic}</span>
+            <div><div style="font-weight:600;color:#f2ead8;font-size:13px;">${a}</div><div style="font-size:11px;color:rgba(242,234,216,0.4);margin-top:2px;">${b}</div></div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1 Week On / 1 Week Off — Wed Changeover</div>
+      <div class="info">📋 Week runs Wed–Tue. Set the first Wednesday each player arrives. 1 game per Wed–Tue week.</div>
+      ${playerRows(gWed,"First ON Wednesday")}
+      <button class="btn-felt" onclick="const f=state.playerStarts[${gWed[0].id}];if(f){${gWed.map(p=>`state.playerStarts[${p.id}]=f;`).join('')}scheduleSave();render();}">Copy first date to all</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1 Week On / 1 Week Off — Mon Changeover (Degen)</div>
+      <div class="info">📋 Week runs Mon–Sun. Set the first Monday Degen arrives on-site.</div>
+      ${playerRows(gMon,"First ON Monday")}
+    </div>
+
+    <div class="card">
+      <div class="card-title">2 Weeks On / 2 Weeks Off — Individual Dates</div>
+      <div class="info">⚠️ Some of these players alternate — each has their own start date.</div>
+      ${playerRows(g2on2,"First ON day")}
+    </div>
+
+    <div class="card">
+      <div class="card-title">2 Weeks On / 1 Week Off</div>
+      ${playerRows(g2on1,"First ON day")}
+      <button class="btn-felt" onclick="const f=state.playerStarts[${g2on1[0].id}];if(f){${g2on1.map(p=>`state.playerStarts[${p.id}]=f;`).join('')}scheduleSave();render();}">Copy first date to all</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Points System</div>
+      <div class="pts-row">
+        <div class="pts-item">Win: <input type="number" value="${state.ptW}" onchange="state.ptW=+this.value;scheduleSave();render();" style="width:52px;text-align:center;"></div>
+        <div class="pts-item">Draw: <input type="number" value="${state.ptD}" onchange="state.ptD=+this.value;scheduleSave();render();" style="width:52px;text-align:center;"></div>
+        <div class="pts-item">Loss: <input type="number" value="${state.ptL}" onchange="state.ptL=+this.value;scheduleSave();render();" style="width:52px;text-align:center;"></div>
+      </div>
+    </div>
+
+    ${drawHtml}
+
+    <div style="text-align:center;margin:8px 0 24px;">
+      <button class="btn-gold lg" onclick="drawAndGenerate();">🎱 ${state.fixtures.length?'Re-draw & Re-generate':'Draw Groups & Generate Fixtures'}</button>
+      ${state.fixtures.length?'<div class="warn">⚠️ Re-generating clears all results</div>':''}
+    </div>`;
+}
+
+// ─── RENDER GROUPS ───────────────────────────────────────────────────────
+function renderGroups() {
+  if (!state.groups) return '<div class="empty">Generate fixtures from Setup first.</div>';
+  const g = state.activeGroup;
+  const gFix = state.fixtures.filter(f=>f.group===g);
+  const gPlayers = state.groups[g];
+  const playedAll = state.fixtures.filter(f=>f.result).length;
+  const totalAll = state.fixtures.length;
+
+  let shown = gFix;
+  if (state.filterPlayer!=="all") shown=shown.filter(f=>f.p1===+state.filterPlayer||f.p2===+state.filterPlayer);
+  if (!state.showPlayed) shown=shown.filter(f=>!f.result);
+  const dates=[...new Set(shown.map(f=>f.date))].sort();
+
+  // Standings
+  const standings = calcStandings(gPlayers, g);
+  const medals=["🥇","🥈","🥉"];
+  const rankColors=["#c9a84c","#c0c0c0","#27ae60"];
+  const rowClasses=["row-1","row-2","row-3"];
+
+  const fixturesHtml = dates.map(d=>{
+    const df=shown.filter(f=>f.date===d);
+    const allDf=gFix.filter(f=>f.date===d);
+    const dDone=allDf.filter(f=>f.result).length;
+    const date=pd(d);
+    const chipsHtml=gPlayers.map(p=>`<span class="chip ${isOnSite(p,date)?'chip-on':'chip-off'}">${p.name.split(" ")[0]}</span>`).join('');
+    const fixHtml=df.map(f=>{
+      const p1n=pName(f.p1), p2n=pName(f.p2);
+      return `<div class="fixture${f.result?' done':''}">
+        <div class="fix-players">
+          ${av(f.p1,22)}<span class="fix-p" style="color:${pColor(f.p1)};">${p1n}</span>
+          <span class="fix-vs">vs</span>
+          ${av(f.p2,22)}<span class="fix-p" style="color:${pColor(f.p2)};">${p2n}</span>
+        </div>
+        <div class="fix-controls">
+          <select onchange="setResult('${f.id}',this.value)">
+            <option value="">— Result —</option>
+            <option value="p1" ${f.result==='p1'?'selected':''}>${pFirst(f.p1)} wins</option>
+            <option value="p2" ${f.result==='p2'?'selected':''}>${pFirst(f.p2)} wins</option>
+            <option value="draw" ${f.result==='draw'?'selected':''}>Draw</option>
+          </select>
+          <span class="badge ${f.result?'badge-done':'badge-pending'}">${f.result?'✓ Done':'Pending'}</span>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div style="margin-bottom:20px;">
+      <div class="day-header">
+        <span class="day-title">${fmtDate(date)}</span>
+        <span class="day-count">${dDone}/${allDf.length}</span>
+      </div>
+      <div class="chips">${chipsHtml}</div>
+      ${fixHtml}
+    </div>`;
+  }).join('');
+
+  const standingsHtml = `
+    <div style="overflow:hidden;border-radius:14px;border:1px solid rgba(255,255,255,0.08);">
+      <div class="standings-wrap">
+        <table>
+          <thead><tr>
+            <th class="center">#</th><th class="left">Player</th>
+            <th class="center">P</th><th class="center">W</th><th class="center">D</th><th class="center">L</th>
+            <th class="center">Pts</th><th class="center">Status</th>
+          </tr></thead>
+          <tbody>
+            ${standings.map((s,i)=>`<tr class="${i<3?rowClasses[i]:''}">
+              <td class="center"><span class="rank" style="color:${i<3?rankColors[i]:'rgba(242,234,216,0.4)'};">${i<3?medals[i]:i+1}</span></td>
+              <td class="left"><div style="display:flex;align-items:center;gap:8px;">${av(s.p.id,24)}<span style="font-weight:600;">${s.p.name}</span></div></td>
+              <td class="center">${s.pl}</td>
+              <td class="center" style="color:#27ae60;font-weight:700;">${s.w}</td>
+              <td class="center" style="color:#f39c12;">${s.d}</td>
+              <td class="center" style="color:#e74c3c;">${s.l}</td>
+              <td class="center"><span class="pts-big">${s.pts}</span></td>
+              <td class="center">${i<3?`<span class="qual-yes">✅ Qualifies</span>`:`<span class="qual-no">${gPlayers.length-1-s.pl>0?gPlayers.length-1-s.pl+' left':'Eliminated'}</span>`}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  return `
+    <div class="stats-grid">
+      ${statBox(totalAll,"Total Matches")}
+      ${statBox(playedAll,"Played")}
+      ${statBox(totalAll-playedAll,"Remaining")}
+      ${statBox("Top 3","Qualify/group")}
+    </div>
+
+    <div class="group-btns">
+      ${["A","B"].map(grp=>{
+        const gp=state.fixtures.filter(f=>f.group===grp&&f.result).length;
+        const gt=state.fixtures.filter(f=>f.group===grp).length;
+        return `<button class="group-btn${grp===g?' active':''}" onclick="state.activeGroup='${grp}';state.filterPlayer='all';render();">
+          Group ${grp} <small>(${state.groups[grp].length})</small> &nbsp; ${gp}/${gt} played
+        </button>`;
+      }).join('')}
+    </div>
+
+    <div class="view-toggle">
+      <button class="view-btn${state.groupView==='fixtures'?' active':''}" onclick="state.groupView='fixtures';render();">📅 Fixtures</button>
+      <button class="view-btn${state.groupView==='standings'?' active':''}" onclick="state.groupView='standings';render();">📊 Standings</button>
+    </div>
+
+    ${state.groupView==='fixtures'?`
+      <div class="filter-row">
+        <select onchange="state.filterPlayer=this.value;render();">
+          <option value="all">All Players — Group ${g}</option>
+          ${gPlayers.map(p=>`<option value="${p.id}" ${state.filterPlayer==p.id?'selected':''}>${p.name}</option>`).join('')}
+        </select>
+        <label><input type="checkbox" ${state.showPlayed?'checked':''} onchange="state.showPlayed=this.checked;render();"> Show completed</label>
+      </div>
+      ${fixturesHtml||'<div class="empty">No matches match filter.</div>'}
+    `:standingsHtml}`;
+}
+
+// ─── RENDER KNOCKOUT ─────────────────────────────────────────────────────
+function renderKnockout() {
+  if (!state.groups) return '<div class="empty">Generate fixtures from Setup first.</div>';
+  const standA=calcStandings(state.groups.A,"A");
+  const standB=calcStandings(state.groups.B,"B");
+  const A1=standA[0]?.p,A2=standA[1]?.p,A3=standA[2]?.p;
+  const B1=standB[0]?.p,B2=standB[1]?.p,B3=standB[2]?.p;
+
+  const seeded={
+    sf1:{p1:A1?.id??null,p2:B2?.id??null},
+    sf2:{p1:B1?.id??null,p2:A2?.id??null},
+    sf3:{p1:A3?.id??null,p2:B3?.id??null},
+  };
+
+  function getResult(mid) { return state.knockout.find(m=>m.id===mid)?.result||null; }
+  function winnerId(mid,s) { const r=getResult(mid); if(!r)return null; return r==="p1"?s?.p1:r==="p2"?s?.p2:null; }
+  function loserId(mid,s) { const r=getResult(mid); if(!r)return null; return r==="p1"?s?.p2:r==="p2"?s?.p1:null; }
+
+  const finalP1=winnerId("sf1",seeded.sf1), finalP2=winnerId("sf2",seeded.sf2);
+  const thirdP1=winnerId("sf3",seeded.sf3), thirdP2=loserId("sf1",seeded.sf1);
+  const champion=winnerId("final",{p1:finalP1,p2:finalP2});
+
+  function koMatch(mid, p1id, p2id, label, desc, disabled=false, isFinal=false) {
+    const p1=p1id!=null?PLAYERS.find(p=>p.id===p1id):null;
+    const p2=p2id!=null?PLAYERS.find(p=>p.id===p2id):null;
+    const r=getResult(mid);
+    const controls=(!disabled&&p1&&p2)?`
+      <div style="display:flex;align-items:center;gap:7px;">
+        <select onchange="setKOResult('${mid}',this.value)">
+          <option value="">— Result —</option>
+          <option value="p1" ${r==='p1'?'selected':''}>${p1.name.split(" ")[0]} wins</option>
+          <option value="p2" ${r==='p2'?'selected':''}>${p2.name.split(" ")[0]} wins</option>
+        </select>
+        ${r?`<span class="badge badge-done">✓</span>`:''}
+      </div>`:`<span style="font-size:11px;color:rgba(242,234,216,0.4);font-style:italic;">Awaiting results</span>`;
+    return `<div class="ko-match${isFinal?' final':''}">
+      <div class="ko-label">${label}</div>
+      <div class="ko-desc">${desc}</div>
+      <div class="ko-row">
+        <div class="ko-players">
+          ${p1?`${av(p1.id,26)}<span class="fix-p" style="color:${pColor(p1.id)};">${p1.name}</span>`:`<span class="tbd">TBD</span>`}
+          <span class="fix-vs">vs</span>
+          ${p2?`${av(p2.id,26)}<span class="fix-p" style="color:${pColor(p2.id)};">${p2.name}</span>`:`<span class="tbd">TBD</span>`}
+        </div>
+        ${controls}
+      </div>
+    </div>`;
+  }
+
+  const championBanner = champion ? `
+    <div class="champion-banner">
+      <div style="font-size:48px;">🏆</div>
+      <div style="font-size:22px;font-weight:800;color:#c9a84c;margin-top:8px;">${pName(champion)}</div>
+      <div style="font-size:13px;color:rgba(242,234,216,0.4);margin-top:4px;">Clarke Creek Pool Champion!</div>
+    </div>` : '';
+
+  const qualifyHtml = `
+    <div class="card">
+      <div class="card-title">Qualified Players</div>
+      <div class="qualify-grid">
+        ${["A","B"].map(g=>{
+          const stand=g==="A"?standA:standB;
+          return `<div>
+            <div class="qualify-group-title">Group ${g} — Top 3</div>
+            ${stand.slice(0,3).map((s,i)=>`
+              <div class="qualify-row">
+                <span style="font-size:14px;width:20px;text-align:center;">${["🥇","🥈","✅"][i]}</span>
+                ${av(s.p.id,22)}<span style="font-size:13px;font-weight:500;">${s.p.name}</span>
+                <span class="qualify-pts">${s.pts}pts</span>
+              </div>`).join('')}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  return `
+    ${championBanner}
+    ${!A1||!B1?`<div class="info">ℹ️ Complete the group stage to seed the knockout bracket.</div>`:''}
+    <div class="card">
+      <div class="card-title">Semi-Finals</div>
+      ${koMatch("sf1",seeded.sf1.p1,seeded.sf1.p2,"Semi-Final 1","Group A 1st vs Group B 2nd")}
+      ${koMatch("sf2",seeded.sf2.p1,seeded.sf2.p2,"Semi-Final 2","Group B 1st vs Group A 2nd")}
+      ${koMatch("sf3",seeded.sf3.p1,seeded.sf3.p2,"3rd Place Semi","Group A 3rd vs Group B 3rd")}
+    </div>
+    <div class="card">
+      <div class="card-title">Finals</div>
+      ${koMatch("final",finalP1,finalP2,"🏆 Grand Final","SF1 winner vs SF2 winner",!finalP1||!finalP2,true)}
+      ${koMatch("third",thirdP1,thirdP2,"3rd Place Play-off","SF3 winner vs SF1 loser",!thirdP1||!thirdP2)}
+    </div>
+    ${qualifyHtml}`;
+}
+
+// ─── RENDER PRIZE ────────────────────────────────────────────────────────
+function renderPrize() {
+  const gPlayed=state.fixtures.filter(f=>f.result).length;
+  const koPlayed=state.knockout.filter(m=>m.result).length;
+  const total=gPlayed+koPlayed;
+  const totalMatches=state.fixtures.length+state.knockout.length;
+  const pot=total*PRIZE_PER_GAME;
+  const max=totalMatches*PRIZE_PER_GAME;
+  const p1=Math.round(pot*0.60), p2=Math.round(pot*0.25), p3=pot-Math.round(pot*0.60)-Math.round(pot*0.25);
+  const pct=totalMatches?Math.round(total/totalMatches*100):0;
+
+  const gameCells=Array.from({length:Math.min(totalMatches,60)},(_,i)=>`
+    <div class="game-cell ${i<total?'done':'todo'}">\$${(i+1)*PRIZE_PER_GAME}</div>`).join('');
+
+  return `
+    <div class="prize-hero">
+      <div style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(242,234,216,0.4);margin-bottom:10px;">Current Prize Pool</div>
+      <div class="prize-amount">\$${pot}</div>
+      <div style="font-size:13px;color:rgba(242,234,216,0.4);margin-top:8px;">${total} games completed × \$${PRIZE_PER_GAME} per game</div>
+    </div>
+
+    <div class="stats-grid">
+      ${statBox(total,"Games Played")}
+      ${statBox(totalMatches-total,"Games Left")}
+      ${statBox("$"+(totalMatches-total)*PRIZE_PER_GAME,"Still to Add")}
+      ${statBox("$"+max,"Max Pot")}
+    </div>
+
+    <div class="card" style="padding:14px 18px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:13px;font-weight:600;">Pool Progress</span>
+        <span style="font-size:13px;font-weight:800;color:#c9a84c;">\$${pot} of \$${max}</span>
+      </div>
+      <div class="prog-wrap lg"><div class="prog-fill" style="width:${pct}%;"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(242,234,216,0.4);margin-top:6px;">
+        <span>Group: ${gPlayed}/${state.fixtures.length}</span>
+        <span>Knockout: ${koPlayed}/${state.knockout.length}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Prize Breakdown (suggested)</div>
+      <div class="info">💰 Updates automatically as games are played.</div>
+      ${[["🥇 1st Place","60%",p1,"#c9a84c"],["🥈 2nd Place","25%",p2,"#c0c0c0"],["🥉 3rd Place","15%",p3,"#cd7f32"]].map(([pos,pct,amt,col])=>`
+        <div class="prize-row">
+          <div class="prize-place"><strong style="color:${col};">${pos}</strong><span>${pct} of total pot</span></div>
+          <div class="prize-val" style="color:${col};">\$${amt}</div>
+        </div>`).join('')}
+      <div style="font-size:11px;color:rgba(242,234,216,0.4);margin-top:8px;text-align:center;">Percentages are a suggestion — adjust as agreed.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Game by Game — \$${PRIZE_PER_GAME} per game</div>
+      <div class="game-grid">${gameCells}${totalMatches>60?`<span style="font-size:11px;color:rgba(242,234,216,0.4);align-self:center;margin-left:4px;">+${totalMatches-60} more</span>`:''}</div>
+    </div>`;
+}
+
+// ─── MAIN RENDER ─────────────────────────────────────────────────────────
+function render() {
+  const totalPot=(state.fixtures.filter(f=>f.result).length+state.knockout.filter(m=>m.result).length)*PRIZE_PER_GAME;
+  const tabs=[{id:"setup",label:"⚙️ Setup"},{id:"groups",label:"🎱 Groups"},{id:"knockout",label:"⚔️ Knockout"},{id:"prize",label:"💰 Prize"}];
+
+  document.getElementById('app').innerHTML = `
+    <div class="header">
+      <div class="balls">
+        ${[["1","#f4d03f","#333"],["2","#2980b9","#fff"],["3","#e74c3c","#fff"],["8","#111","#fff"],["4","#8e44ad","#fff"],["5","#e67e22","#fff"]].map(([n,bg,c])=>`<div class="ball" style="background:${bg};color:${c};">${n}</div>`).join('')}
+      </div>
+      <h1>Clarke Creek<br>Pool Competition</h1>
+      <p class="subtitle">Group Stage · Top 3 Qualify · Knockout Finals</p>
+      ${totalPot>0?`<div class="pot-badge"><strong>\$${totalPot}</strong> prize pool</div>`:''}
+      ${state.saveMsg?`<div class="save-msg">${state.saveMsg}</div>`:''}
+    </div>
+
+    <div class="format-grid">
+      <div class="format-box"><strong>15 Players</strong><span>2 groups</span></div>
+      <div class="format-box"><strong>Top 3 Qualify</strong><span>per group</span></div>
+      <div class="format-box"><strong>\$5 / game</strong><span>prize pool</span></div>
+    </div>
+
+    <div class="tabs">
+      ${tabs.map(t=>`<button class="tab-btn${state.tab===t.id?' active':''}" onclick="state.tab='${t.id}';render();">${t.label}</button>`).join('')}
+    </div>
+
+    <div id="panel-content">
+      ${state.tab==='setup'?renderSetup():state.tab==='groups'?renderGroups():state.tab==='knockout'?renderKnockout():renderPrize()}
+    </div>
+
+    <div style="text-align:center;padding-bottom:24px;margin-top:6px;">
+      <span style="font-size:11px;color:rgba(242,234,216,0.15);letter-spacing:2px;">CLARKE CREEK · 🎱 · $5 PER GAME</span>
+    </div>`;
+}
+
+// ─── EVENT HANDLERS ──────────────────────────────────────────────────────
+function setResult(fid, val) {
+  const f = state.fixtures.find(x=>x.id===fid);
+  if (f) { f.result = val||null; scheduleSave(); render(); }
+}
+function setKOResult(mid, val) {
+  const m = state.knockout.find(x=>x.id===mid);
+  if (m) { m.result = val||null; scheduleSave(); render(); }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────
+loadState();
+render();
+</script>
+</body>
+</html>
