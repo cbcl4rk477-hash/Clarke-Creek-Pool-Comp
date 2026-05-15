@@ -9,7 +9,6 @@
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#0c1810;color:#f2ead8;min-height:100vh;}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,0.006) 3px,rgba(255,255,255,0.006) 6px),radial-gradient(ellipse at 10% 10%,rgba(26,74,46,0.3) 0%,transparent 50%),radial-gradient(ellipse at 90% 90%,rgba(30,77,52,0.2) 0%,transparent 50%);pointer-events:none;z-index:0;}
 #app{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:14px 12px;}
-/* HEADER */
 .header{text-align:center;padding:28px 10px 16px;}
 .balls{display:flex;justify-content:center;gap:8px;margin-bottom:14px;}
 .ball{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;box-shadow:inset -3px -3px 6px rgba(0,0,0,0.5),inset 2px 2px 5px rgba(255,255,255,0.25),0 3px 10px rgba(0,0,0,0.5);}
@@ -18,49 +17,38 @@ h1{font-size:clamp(26px,5.5vw,54px);font-weight:800;color:#c9a84c;line-height:1.
 .pot-badge{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);border-radius:20px;font-size:13px;color:rgba(242,234,216,0.6);}
 .pot-badge strong{color:#c9a84c;font-size:15px;}
 .save-msg{margin-top:7px;font-size:11px;color:#27ae60;}
-/* FORMAT BANNER */
 .format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;text-align:center;}
 .format-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 8px;}
 .format-box strong{display:block;font-size:14px;font-weight:800;color:#c9a84c;}
 .format-box span{font-size:11px;color:rgba(242,234,216,0.4);}
-/* TABS */
 .tabs{display:flex;gap:3px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:4px;margin-bottom:16px;}
 .tab-btn{flex:1;padding:8px 2px;background:none;border:none;color:rgba(242,234,216,0.4);font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;border-radius:8px;text-align:center;transition:all .15s;}
 .tab-btn.active{background:#1e4d34;color:#c9a84c;box-shadow:0 2px 8px rgba(0,0,0,0.35);}
-.panel{display:none;}.panel.active{display:block;}
-/* CARDS */
 .card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px;margin-bottom:14px;}
 .card-gold{background:rgba(201,168,76,0.05);border-color:rgba(201,168,76,0.18);}
 .card-title{font-size:13px;font-weight:700;letter-spacing:1.5px;color:#c9a84c;margin-bottom:14px;text-transform:uppercase;}
-/* FORM */
 input[type=date],input[type=number],select{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:7px 11px;color:#f2ead8;font-family:inherit;font-size:13px;outline:none;}
 input[type=date]::-webkit-calendar-picker-indicator{filter:invert(0.7);}
 select option{background:#1a3d2b;}
 .btn-gold{padding:9px 22px;border:none;border-radius:9px;background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#0c1810;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;}
 .btn-gold.lg{font-size:15px;padding:13px 44px;}
 .btn-felt{padding:7px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:8px;background:#1e4d34;color:#f2ead8;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;}
-/* PLAYER ROW */
 .player-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:9px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;}
 .av{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;}
 .player-name{flex:1;font-size:13px;font-weight:500;min-width:130px;}
 .set-ok{font-size:10px;color:#27ae60;}
 .set-no{font-size:10px;color:rgba(231,76,60,0.7);}
-/* INFO */
 .info{display:flex;gap:8px;padding:9px 12px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.18);border-radius:9px;font-size:12px;color:rgba(201,168,76,.85);margin-bottom:12px;line-height:1.5;}
-/* STATS GRID */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-bottom:14px;}
 .stat-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:11px;padding:12px 8px;text-align:center;}
 .stat-val{font-size:22px;font-weight:800;color:#c9a84c;line-height:1;}
 .stat-lbl{font-size:11px;color:rgba(242,234,216,0.4);margin-top:3px;}
-/* GROUP BUTTONS */
 .group-btns{display:flex;gap:6px;margin-bottom:12px;}
 .group-btn{flex:1;padding:10px;border:none;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);outline:1px solid rgba(255,255,255,0.08);}
 .group-btn.active{background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#0c1810;outline:none;}
-/* VIEW TOGGLE */
 .view-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:3px;margin-bottom:14px;}
 .view-btn{flex:1;padding:7px;border:none;border-radius:8px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;background:none;color:rgba(242,234,216,0.4);}
 .view-btn.active{background:#1e4d34;color:#c9a84c;}
-/* FIXTURE */
 .day-header{border-bottom:1px solid rgba(201,168,76,0.2);padding-bottom:7px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
 .day-title{font-size:14px;font-weight:700;color:#c9a84c;}
 .day-count{font-size:11px;color:rgba(242,234,216,0.4);}
@@ -77,11 +65,9 @@ select option{background:#1a3d2b;}
 .badge{font-size:11px;padding:2px 9px;border-radius:20px;}
 .badge-done{background:rgba(39,174,96,0.14);color:#27ae60;border:1px solid rgba(39,174,96,0.25);}
 .badge-pending{background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);border:1px solid rgba(255,255,255,0.08);}
-/* PROGRESS BAR */
 .prog-wrap{height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;margin:8px 0;}
 .prog-fill{height:100%;background:linear-gradient(90deg,#1e4d34,#c9a84c);border-radius:4px;transition:width .4s;}
 .prog-wrap.lg{height:10px;}
-/* STANDINGS TABLE */
 .standings-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;}
 th{font-size:11px;letter-spacing:1.5px;color:rgba(242,234,216,0.4);padding:10px 10px;border-bottom:1px solid rgba(255,255,255,0.08);white-space:nowrap;font-weight:600;}
@@ -95,7 +81,6 @@ td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.0
 .pts-big{font-size:20px;font-weight:800;color:#c9a84c;}
 .qual-yes{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(39,174,96,0.14);color:#27ae60;border:1px solid rgba(39,174,96,0.25);}
 .qual-no{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.04);color:rgba(242,234,216,0.4);border:1px solid rgba(255,255,255,0.08);}
-/* KO MATCH */
 .ko-match{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
 .ko-match.final{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);}
 .ko-label{font-size:13px;font-weight:700;color:#f2ead8;margin-bottom:3px;}
@@ -105,7 +90,6 @@ td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.0
 .ko-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 .tbd{font-size:13px;color:rgba(242,234,216,0.4);font-style:italic;}
 .champion-banner{text-align:center;padding:24px 16px;background:radial-gradient(ellipse at center,rgba(201,168,76,0.15) 0%,transparent 70%);border:1px solid rgba(201,168,76,0.3);border-radius:16px;margin-bottom:20px;}
-/* PRIZE */
 .prize-hero{text-align:center;padding:28px 16px;background:radial-gradient(ellipse at center,rgba(201,168,76,0.12) 0%,transparent 65%);border:1px solid rgba(201,168,76,0.25);border-radius:16px;margin-bottom:16px;}
 .prize-amount{font-size:60px;font-weight:900;color:#c9a84c;line-height:1;text-shadow:0 0 40px rgba(201,168,76,0.4);}
 .prize-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:11px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.07);}
@@ -117,10 +101,8 @@ td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.0
 .game-cell{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
 .game-cell.done{background:linear-gradient(135deg,#1e4d34,#c9a84c);border:1px solid rgba(201,168,76,0.4);color:#c9a84c;}
 .game-cell.todo{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:rgba(242,234,216,0.4);}
-/* FILTER ROW */
 .filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
 .filter-row label{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(242,234,216,0.4);cursor:pointer;}
-/* MISC */
 .empty{text-align:center;padding:50px 20px;color:rgba(242,234,216,0.4);font-size:13px;}
 .warn{font-size:11px;color:rgba(231,76,60,0.7);margin-top:8px;text-align:center;}
 .pts-row{display:flex;gap:20px;flex-wrap:wrap;}
@@ -143,8 +125,17 @@ td{padding:10px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.0
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app"><div style="text-align:center;padding:80px 20px;color:rgba(242,234,216,0.4);font-size:14px;letter-spacing:2px;">LOADING…</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ─── SUPABASE CONFIG ─────────────────────────────────────────────────────
+// supabase.com → your project → Settings → API
+const SUPABASE_URL  = "https://agzvujlisrhqkehtfltw.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnenZ1amxpc3JocWtlaHRmbHR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NzQyODEsImV4cCI6MjA5NDQ1MDI4MX0.TWN6MNPDFl942XGkt1yccOUm1oD6KSNZ9ZiNlTD2Vec";
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const DB_KEY = "cc_pool_v3";
+
 // ─── DATA ───────────────────────────────────────────────────────────────
 const PLAYERS = [
   {id:0, name:"Alex Rickard",    short:"AR", roster:"1on1off_wed"},
@@ -166,7 +157,6 @@ const PLAYERS = [
 
 const AV_COLORS = ["#c0392b","#2980b9","#27ae60","#8e44ad","#e67e22","#16a085","#d35400","#1abc9c","#f39c12","#6c5ce7","#e84393","#00b894","#e17055","#0984e3","#b8860b"];
 const ROSTER_LABELS = {"1on1off_wed":"1on/1off (Wed)","1on1off_mon":"1on/1off (Mon)","2on2off":"2on/2off","2on1off":"2on/1off"};
-const STORAGE_KEY = "cc_pool_v3";
 const MS_DAY = 86400000;
 const PRIZE_PER_GAME = 5;
 
@@ -196,36 +186,49 @@ function initKnockout() {
   ];
 }
 
-// ─── STORAGE ────────────────────────────────────────────────────────────
-function saveState() {
-  try {
-    const d = {compStart:state.compStart,playerStarts:state.playerStarts,ptW:state.ptW,ptD:state.ptD,ptL:state.ptL,groups:state.groups,fixtures:state.fixtures,knockout:state.knockout};
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-    state.saveMsg = "✓ Saved";
-    setTimeout(()=>{ state.saveMsg=""; render(); }, 2500);
-    render();
-  } catch(e) {}
-}
+// ─── SUPABASE STORAGE ────────────────────────────────────────────────────
 let saveTimer = null;
+
 function scheduleSave() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveState, 700);
 }
 
-function loadState() {
+async function saveState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    if (d.compStart) state.compStart = d.compStart;
-    if (d.playerStarts) state.playerStarts = d.playerStarts;
-    if (d.ptW !== undefined) state.ptW = d.ptW;
-    if (d.ptD !== undefined) state.ptD = d.ptD;
-    if (d.ptL !== undefined) state.ptL = d.ptL;
-    if (d.groups) state.groups = d.groups;
-    if (d.fixtures && d.fixtures.length) { state.fixtures = d.fixtures; state.tab = "groups"; }
-    if (d.knockout) state.knockout = d.knockout;
-  } catch(e) {}
+    const { error } = await sb.from("pool_state").upsert({
+      key:          DB_KEY,
+      compStart:    state.compStart,
+      playerStarts: state.playerStarts,
+      ptW:          state.ptW,
+      ptD:          state.ptD,
+      ptL:          state.ptL,
+      groups:       state.groups,
+      fixtures:     state.fixtures,
+      knockout:     state.knockout,
+      updated_at:   new Date().toISOString()
+    }, { onConflict: "key" });
+    state.saveMsg = error ? "⚠ Save failed" : "✓ Saved";
+  } catch(e) {
+    state.saveMsg = "⚠ Save failed";
+  }
+  render();
+  setTimeout(() => { state.saveMsg = ""; render(); }, 2500);
+}
+
+async function loadState() {
+  try {
+    const { data, error } = await sb.from("pool_state").select("*").eq("key", DB_KEY).single();
+    if (error || !data) return;
+    if (data.compStart)                              state.compStart    = data.compStart;
+    if (data.playerStarts)                           state.playerStarts = data.playerStarts;
+    if (data.ptW !== undefined && data.ptW !== null) state.ptW = data.ptW;
+    if (data.ptD !== undefined && data.ptD !== null) state.ptD = data.ptD;
+    if (data.ptL !== undefined && data.ptL !== null) state.ptL = data.ptL;
+    if (data.groups)                                 state.groups   = data.groups;
+    if (data.fixtures && data.fixtures.length)       { state.fixtures = data.fixtures; state.tab = "groups"; }
+    if (data.knockout && data.knockout.length)       state.knockout = data.knockout;
+  } catch(e) { /* silent — app still renders with default state */ }
 }
 
 // ─── ROSTER LOGIC ────────────────────────────────────────────────────────
@@ -471,7 +474,6 @@ function renderGroups() {
   if (!state.showPlayed) shown=shown.filter(f=>!f.result);
   const dates=[...new Set(shown.map(f=>f.date))].sort();
 
-  // Standings
   const standings = calcStandings(gPlayers, g);
   const medals=["🥇","🥈","🥉"];
   const rankColors=["#c9a84c","#c0c0c0","#27ae60"];
@@ -588,7 +590,7 @@ function renderKnockout() {
 
   function getResult(mid) { return state.knockout.find(m=>m.id===mid)?.result||null; }
   function winnerId(mid,s) { const r=getResult(mid); if(!r)return null; return r==="p1"?s?.p1:r==="p2"?s?.p2:null; }
-  function loserId(mid,s) { const r=getResult(mid); if(!r)return null; return r==="p1"?s?.p2:r==="p2"?s?.p1:null; }
+  function loserId(mid,s)  { const r=getResult(mid); if(!r)return null; return r==="p1"?s?.p2:r==="p2"?s?.p1:null; }
 
   const finalP1=winnerId("sf1",seeded.sf1), finalP2=winnerId("sf2",seeded.sf2);
   const thirdP1=winnerId("sf3",seeded.sf3), thirdP2=loserId("sf1",seeded.sf1);
@@ -674,28 +676,25 @@ function renderPrize() {
   const max=totalMatches*PRIZE_PER_GAME;
   const p1=Math.round(pot*0.60), p2=Math.round(pot*0.25), p3=pot-Math.round(pot*0.60)-Math.round(pot*0.25);
   const pct=totalMatches?Math.round(total/totalMatches*100):0;
-
   const gameCells=Array.from({length:Math.min(totalMatches,60)},(_,i)=>`
-    <div class="game-cell ${i<total?'done':'todo'}">\$${(i+1)*PRIZE_PER_GAME}</div>`).join('');
+    <div class="game-cell ${i<total?'done':'todo'}">$${(i+1)*PRIZE_PER_GAME}</div>`).join('');
 
   return `
     <div class="prize-hero">
       <div style="font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(242,234,216,0.4);margin-bottom:10px;">Current Prize Pool</div>
-      <div class="prize-amount">\$${pot}</div>
-      <div style="font-size:13px;color:rgba(242,234,216,0.4);margin-top:8px;">${total} games completed × \$${PRIZE_PER_GAME} per game</div>
+      <div class="prize-amount">$${pot}</div>
+      <div style="font-size:13px;color:rgba(242,234,216,0.4);margin-top:8px;">${total} games completed × $${PRIZE_PER_GAME} per game</div>
     </div>
-
     <div class="stats-grid">
       ${statBox(total,"Games Played")}
       ${statBox(totalMatches-total,"Games Left")}
       ${statBox("$"+(totalMatches-total)*PRIZE_PER_GAME,"Still to Add")}
       ${statBox("$"+max,"Max Pot")}
     </div>
-
     <div class="card" style="padding:14px 18px;">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
         <span style="font-size:13px;font-weight:600;">Pool Progress</span>
-        <span style="font-size:13px;font-weight:800;color:#c9a84c;">\$${pot} of \$${max}</span>
+        <span style="font-size:13px;font-weight:800;color:#c9a84c;">$${pot} of $${max}</span>
       </div>
       <div class="prog-wrap lg"><div class="prog-fill" style="width:${pct}%;"></div></div>
       <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(242,234,216,0.4);margin-top:6px;">
@@ -703,20 +702,18 @@ function renderPrize() {
         <span>Knockout: ${koPlayed}/${state.knockout.length}</span>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">Prize Breakdown (suggested)</div>
       <div class="info">💰 Updates automatically as games are played.</div>
       ${[["🥇 1st Place","60%",p1,"#c9a84c"],["🥈 2nd Place","25%",p2,"#c0c0c0"],["🥉 3rd Place","15%",p3,"#cd7f32"]].map(([pos,pct,amt,col])=>`
         <div class="prize-row">
           <div class="prize-place"><strong style="color:${col};">${pos}</strong><span>${pct} of total pot</span></div>
-          <div class="prize-val" style="color:${col};">\$${amt}</div>
+          <div class="prize-val" style="color:${col};">$${amt}</div>
         </div>`).join('')}
       <div style="font-size:11px;color:rgba(242,234,216,0.4);margin-top:8px;text-align:center;">Percentages are a suggestion — adjust as agreed.</div>
     </div>
-
     <div class="card">
-      <div class="card-title">Game by Game — \$${PRIZE_PER_GAME} per game</div>
+      <div class="card-title">Game by Game — $${PRIZE_PER_GAME} per game</div>
       <div class="game-grid">${gameCells}${totalMatches>60?`<span style="font-size:11px;color:rgba(242,234,216,0.4);align-self:center;margin-left:4px;">+${totalMatches-60} more</span>`:''}</div>
     </div>`;
 }
@@ -725,7 +722,6 @@ function renderPrize() {
 function render() {
   const totalPot=(state.fixtures.filter(f=>f.result).length+state.knockout.filter(m=>m.result).length)*PRIZE_PER_GAME;
   const tabs=[{id:"setup",label:"⚙️ Setup"},{id:"groups",label:"🎱 Groups"},{id:"knockout",label:"⚔️ Knockout"},{id:"prize",label:"💰 Prize"}];
-
   document.getElementById('app').innerHTML = `
     <div class="header">
       <div class="balls">
@@ -733,24 +729,20 @@ function render() {
       </div>
       <h1>Clarke Creek<br>Pool Competition</h1>
       <p class="subtitle">Group Stage · Top 3 Qualify · Knockout Finals</p>
-      ${totalPot>0?`<div class="pot-badge"><strong>\$${totalPot}</strong> prize pool</div>`:''}
+      ${totalPot>0?`<div class="pot-badge"><strong>$${totalPot}</strong> prize pool</div>`:''}
       ${state.saveMsg?`<div class="save-msg">${state.saveMsg}</div>`:''}
     </div>
-
     <div class="format-grid">
       <div class="format-box"><strong>15 Players</strong><span>2 groups</span></div>
       <div class="format-box"><strong>Top 3 Qualify</strong><span>per group</span></div>
-      <div class="format-box"><strong>\$5 / game</strong><span>prize pool</span></div>
+      <div class="format-box"><strong>$5 / game</strong><span>prize pool</span></div>
     </div>
-
     <div class="tabs">
       ${tabs.map(t=>`<button class="tab-btn${state.tab===t.id?' active':''}" onclick="state.tab='${t.id}';render();">${t.label}</button>`).join('')}
     </div>
-
     <div id="panel-content">
       ${state.tab==='setup'?renderSetup():state.tab==='groups'?renderGroups():state.tab==='knockout'?renderKnockout():renderPrize()}
     </div>
-
     <div style="text-align:center;padding-bottom:24px;margin-top:6px;">
       <span style="font-size:11px;color:rgba(242,234,216,0.15);letter-spacing:2px;">CLARKE CREEK · 🎱 · $5 PER GAME</span>
     </div>`;
@@ -767,8 +759,7 @@ function setKOResult(mid, val) {
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────
-loadState();
-render();
+loadState().then(() => render());
 </script>
 </body>
 </html>
